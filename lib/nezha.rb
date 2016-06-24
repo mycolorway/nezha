@@ -11,7 +11,7 @@ module Nezha
 
     attr_reader :endpoint, :access_key, :secret_key
 
-    def initialize(access_key = ENV['FACELESS_VOID_ACCESS_KEY'], secret_key = ENV['FACELESS_VOID_SECRET_KEY'], endpoint = DEFAULT_ENDPOINT)
+    def initialize(access_key: ENV['FACELESS_VOID_ACCESS_KEY'], secret_key: ENV['FACELESS_VOID_SECRET_KEY'], endpoint: DEFAULT_ENDPOINT)
       raise "Invalid Endpoint" if endpoint.nil? || endpoint.empty? || endpoint !~ /^https?:\/\/.+$/ || endpoint.include?('?')
 
       @access_key = access_key || ""
@@ -26,6 +26,10 @@ module Nezha
 
     def post(path, data={})
       signed_request :post, path, data
+    end
+
+    def patch(path, data={})
+      signed_request :patch, path, data
     end
 
     private
@@ -43,9 +47,9 @@ module Nezha
       params[:payload] = payload
       params[:access_key] = access_key
       params[:tonce] = Time.now.to_i
-      params[:signature] = sign(method, path, params[:access_key], params[:tonce], payload)
+      params[:signature] = sign(method, full_path(path), params[:access_key], params[:tonce], payload)
 
-      do_request(method, path, params)
+      do_request(method, full_path(path), params)
     end
 
     def do_request(method, path, params)
@@ -58,6 +62,11 @@ module Nezha
 
       conn.send method, path, params
     end
+
+    def full_path(path)
+      "/api/v#{Nezha::VERSION.split('.').first}#{path}"
+    end
+
 
   end
 end
