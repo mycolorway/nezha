@@ -33,5 +33,4 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "faraday", "~> 0.9.1"
   spec.add_runtime_dependency "activesupport", ">= 4.2.3"
-  spec.add_runtime_dependency "mime-types", "~> 2.6.2"
 end
