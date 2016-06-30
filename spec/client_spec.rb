@@ -59,7 +59,7 @@ module Nezha
 
 
         it "should return current time of server" do
-          response = client.get('/api/v1/time')
+          response = client.get('/time')
 
           expect(response.status).to eq(201)
           expect(ActiveSupport::JSON.decode response.body).to eq({'timestamp' => 1466754628 })
