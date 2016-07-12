@@ -53,14 +53,14 @@ module Nezha
     end
 
     def do_request(method, path, params)
-      conn = Faraday.new(url: endpoint) do |faraday|
-        faraday.request :multipart if method == :post
+      conn.send method, path, params
+    end
+
+    def conn
+      @conn ||= Faraday.new(url: endpoint) do |faraday|
         faraday.request :url_encoded
         faraday.adapter :net_http
       end
-      puts params
-
-      conn.send method, path, params
     end
 
     def full_path(path)
