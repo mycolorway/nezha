@@ -8,14 +8,16 @@ require 'openssl'
 module Nezha
   class Client
     DEFAULT_ENDPOINT = ENV['NEZHA_ENDPOINT'] || 'https://fk.zhirenhr.com'
+    DEFAULT_VERSION = ENV['NEZHA_API_VERSION'] || 'v1'
 
-    attr_reader :endpoint, :access_key, :secret_key
+    attr_reader :endpoint, :access_key, :secret_key, :version
 
-    def initialize(access_key: ENV['FACELESS_VOID_ACCESS_KEY'], secret_key: ENV['FACELESS_VOID_SECRET_KEY'], endpoint: DEFAULT_ENDPOINT)
+    def initialize(access_key: ENV['FACELESS_VOID_ACCESS_KEY'], secret_key: ENV['FACELESS_VOID_SECRET_KEY'], endpoint: DEFAULT_ENDPOINT, version: DEFAULT_VERSION)
       raise "Invalid Endpoint" if endpoint.nil? || endpoint.empty? || endpoint !~ /^https?:\/\/.+$/ || endpoint.include?('?')
 
       @access_key = access_key || ""
       @secret_key = secret_key || ""
+      @version = version || ""
       @endpoint = endpoint
     end
 
@@ -64,9 +66,8 @@ module Nezha
     end
 
     def full_path(path)
-      "/api/v#{Nezha::VERSION.split('.').first}#{path}"
+      "/api/#{version}#{path}"
     end
-
 
   end
 end
