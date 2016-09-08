@@ -7,7 +7,7 @@ require 'openssl'
 
 module Nezha
   class Client
-    DEFAULT_ENDPOINT = 'https://fk.zhirenhr.com'
+    DEFAULT_ENDPOINT = ENV['NEZHA_ENDPOINT'] || 'https://fk.zhirenhr.com'
 
     attr_reader :endpoint, :access_key, :secret_key
 
